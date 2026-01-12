@@ -1,16 +1,28 @@
 services:
   backend:
     build:
-      context: .
+      context: ./backend
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
     environment:
       - DATABASE_URL=postgresql://user:password@db:5432/pr_review?schema=public
+      - REDIS_URL=redis://redis:6379
       - PORT=3000
     depends_on:
       db:
         condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:80"
+    depends_on:
+      - backend
 
   db:
     image: postgres:17-alpine
@@ -29,6 +41,19 @@ services:
       timeout: 5s
       retries: 5
 
+  redis:
+    image: redis:alpine
+    restart: always
+    ports:
+      - "6378:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
 volumes:
   db-data:
-
+  redis-data:

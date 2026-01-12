@@ -5,7 +5,3 @@ node_modules
 npm-debug.log
 dist
 .env
-frontend/
-README.md
-compose.yaml
-Dockerfile
