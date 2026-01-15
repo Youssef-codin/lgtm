@@ -43,6 +43,7 @@
         "vitest": "^4.0.16"
     },
     "dependencies": {
+        "@pr-review/shared": "workspace:*",
         "@prisma/adapter-pg": "^7.1.0",
         "@prisma/client": "^7.1.0",
         "bcrypt": "^6.0.0",
